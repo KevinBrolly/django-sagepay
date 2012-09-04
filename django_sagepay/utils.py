@@ -54,8 +54,10 @@ def truncate_overlong_fields(data):
     # not a required fields and users should already be clear what they're
     # buying at this stage.
     basket = data.pop('Basket', None)
-    if basket and basket == utf8_truncate(basket, BASKET_FIELD_LENGTH):
-        data['Basket'] = basket
+    if basket:
+        basket = encode_basket(basket)
+        if basket == utf8_truncate(basket, BASKET_FIELD_LENGTH):
+            data['Basket'] = basket
     # Truncate fields
     for field, length in FIELD_LENGTHS:
         try:
@@ -95,9 +97,6 @@ def encode_transaction_request(data):
     # We're going to mutate this dict so make a copy
     data = data.copy()
     data['Amount'] = format_money_value(data['Amount'])
-    basket = data.pop('Basket', None)
-    if basket:
-        data['Basket'] = encode_basket(basket)
     for key in data:
         if not isinstance(data[key], basestring):
             data[key] = unicode(data[key])
