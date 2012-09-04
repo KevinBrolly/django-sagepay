@@ -4,7 +4,7 @@ from distutils.core import setup
 from glob import glob
 
 setup(name='django-sagepay',
-      version='0.1',
+      version='0.1.1',
       requires=['django', 'jsonfield', 'requests'],
       description='Django interface for Sagepay payment gateway',
       author='David Evans',
